@@ -1,24 +1,32 @@
-const express = require('express');
-const app = express();
-const PORT = process.env.PORT || 3000;
+import express from "express";
+import cors from "cors";
+import admin from "firebase-admin";
 
-// Middleware
+// 🔹 Initialiser Firestore
+import serviceAccount from "./serviceAccountKey.json"; // ton fichier de clé Firebase
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+const db = admin.firestore();
+
+const app = express();
+app.use(cors());
 app.use(express.json());
 
-// Routes
-app.get('/', (req, res) => {
-  res.json({ 
-    message: 'Welcome to Node.js API',
-    status: 'running',
-    timestamp: new Date().toISOString()
-  });
+// 🔹 Endpoint pour récupérer les produits externes
+app.get("/products-external", async (req, res) => {
+  try {
+    const snapshot = await db.collection("ProductsExternes").get();
+    const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    res.json(products);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Impossible de récupérer les produits externes" });
+  }
 });
 
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
-});
-
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-});
+// 🔹 Démarrer le serveur
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
