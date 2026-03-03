@@ -1,28 +1,24 @@
 {
   "name": "nodejs",
   "version": "1.0.0",
-  "description": "A minimal Node.js web application with TypeScript",
-  "main": "dist/index.js",
+  "description": "MiniShop Node.js API",
+  "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "tsx watch src/index.ts"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
-  "keywords": [
-    "nodejs",
-    "express",
-    "api",
-    "typescript"
-  ],
+  "keywords": ["nodejs", "express", "firebase", "minishop"],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "firebase-admin": "^11.11.0",
+    "node-fetch": "^3.3.2",
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^25.2.2",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "nodemon": "^3.0.2"
   }
 }
